@@ -15,9 +15,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use("/", () => {
-    res.status(200).json({
+    res.status(200).json(
         "App is running"
-    });
+    );
 });
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/admin", adminRouter);
