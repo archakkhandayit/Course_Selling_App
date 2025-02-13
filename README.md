@@ -10,7 +10,3 @@
  - Define the schema for User, Admin, Course, Purchase
  - Complete the routes for user login, signup, purchase a course, see course (Extra points - use express routing to better structure your routes)
  - Create the frontend
-
-# TODO
-
- - add delete course route for admin to delete any "existing" course
