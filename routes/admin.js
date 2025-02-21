@@ -68,6 +68,10 @@ adminRouter.post("/signin",async function (req, res){
                 message: "Wrong password"
             })
         }
+    } else{
+        res.status(401).json({
+            message: "Wrong Credentials"
+        })
     }
 })
 
@@ -249,4 +253,3 @@ adminRouter.delete("/course", adminAuth, async function (req, res){
 module.exports = {
     adminRouter
 }
-
