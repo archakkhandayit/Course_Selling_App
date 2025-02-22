@@ -32,7 +32,7 @@ userRouter.post("/signup",async function ( req, res ){
     const parsedBody = requiredBody.safeParse(req.body);
 
     if(!parsedBody.success){
-        return res.json({
+        return res.status(422).json({
                     message: "Incorrect format",
                     error: parsedBody.error
         })
@@ -54,8 +54,8 @@ userRouter.post("/signup",async function ( req, res ){
         })
     } catch(e){
         console.error(e);
-        res.status(500).json({
-            message: "Can not sign up"
+        res.status(409).json({
+            message: "Email already in use"
         })
     }
 });
@@ -70,8 +70,8 @@ userRouter.post("/signin",async function ( req, res ){
             email: email
         })
     } catch(e){
-        res.json({
-            message: "User not signed up"
+        res.status(500).json({
+            message: "Something went wrong"
         })
     }
 
@@ -92,7 +92,7 @@ userRouter.post("/signin",async function ( req, res ){
         }
     } else{
         res.status(401).json({
-            message: "Wrong Credentials"
+            message: "User not signed up"
         })
     }
 });

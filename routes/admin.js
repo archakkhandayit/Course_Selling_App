@@ -33,8 +33,8 @@ adminRouter.post("/signup",async function (req, res){
     })
     } catch(e){
         console.error(e);
-        res.status(500).json({
-            message: "Can not sign up"
+        res.status(409).json({
+            message: "Email already in use"
         })
     }
 });
@@ -48,7 +48,7 @@ adminRouter.post("/signin",async function (req, res){
             email: email
         });
     } catch(e){
-        res.json({
+        res.status(401).json({
             message: "Admin not signed up"
         })
     }
@@ -93,7 +93,7 @@ adminRouter.post("/course",adminAuth ,async function (req, res){
         });
 
         res.json({
-            message: "course created",
+            message: "course created successfully",
             courseId: course._id
         })
     } catch(e){
@@ -177,7 +177,7 @@ adminRouter.put("/course",adminAuth,async function (req, res){
          // Fetch the updated course
          const updatedCourse = await courseModel.findById(courseId);
          if (!updatedCourse) {
-             return res.status(404).json({
+             return res.status(500).json({
                  message: "Course not found after update"
              });
          }
@@ -231,19 +231,15 @@ adminRouter.delete("/course", adminAuth, async function (req, res){
 
         if(isDeleted.deletedCount>0){
             res.json({
-
                 message: "course deleted successfully"
             })
         } else{
-            
             res.status(404).json({
-
                 message: "course not found"
             })
         }
     } catch(e){
         res.status(500).json({
-
             message: "Something went wrong"
         })
     }
@@ -253,3 +249,4 @@ adminRouter.delete("/course", adminAuth, async function (req, res){
 module.exports = {
     adminRouter
 }
+
