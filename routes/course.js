@@ -11,14 +11,27 @@ courseRouter.post("/purchase",userAuth,async function (req, res){
     const courseId = req.body.courseId;
 
     try{
-        await purchaseModel.create({
+        // Finding If the user already purchased or not
+        const isPurchased = await purchaseModel.findOne({
             userId,
-            courseId    
-        });
-
-        res.json({
-            messge: "You have successfully bought the course"
+            courseId
         })
+        if( isPurchased ){
+            res.status(400).json({
+                message: "Can't purchase the course. Already purchased"
+            })
+        } else{
+
+            
+            await purchaseModel.create({
+                userId,
+                courseId    
+            });
+            
+            res.json({
+                message: "You have successfully bought the course"
+            })
+        }
     } catch(e){
         res.status(500).json({
             message: "Something went wrong"
