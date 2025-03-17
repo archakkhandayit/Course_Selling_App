@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LearnHub - Online Courses</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .course-card { transition: transform 0.2s; }
+        .course-card:hover { transform: translateY(-5px); }
+        .nav-link { cursor: pointer; }
+        .hidden { display: none !important; }
+    </style>
+
+</head>
+<body class="bg-light">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">LearnHub</a>
+            <div class="d-flex">
+                <button class="btn btn-outline-light me-2" onclick="handleUserBtn()">User</button>
+                <button class="btn btn-outline-light" onclick="handleAdminBtn()">Admin</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- User Auth Section -->
+    <div id="userAuth" class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <!-- User Signup -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">User Registration</h5>
+                        <form onsubmit="userSignup(event)">
+                            <div class="mb-3">
+                                <input type="email" class="form-control" placeholder="Email" required>
+                            </div>
+                            <div class="mb-3">
+                                <input type="password" class="form-control" placeholder="Password" required>
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" class="form-control" placeholder="First Name" required>
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" class="form-control" placeholder="Last Name" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Register</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- User Login -->
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">User Login</h5>
+                        <form onsubmit="userLogin(event)">
+                            <div class="mb-3">
+                                <input type="email" class="form-control" placeholder="Email" required>
+                            </div>
+                            <div class="mb-3">
+                                <input type="password" class="form-control" placeholder="Password" required>
+                            </div>
+                            <button type="submit" class="btn btn-success">Login</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Auth Section -->
+    <div id="adminAuth" class="container mt-5 hidden">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <!-- Admin Signup -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Admin Registration</h5>
+                        <form onsubmit="adminSignup(event)">
+                            <div class="mb-3">
+                                <input type="email" class="form-control" placeholder="Email" required>
+                            </div>
+                            <div class="mb-3">
+                                <input type="password" class="form-control" placeholder="Password" required>
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" class="form-control" placeholder="First Name" required>
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" class="form-control" placeholder="Last Name" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Register</button>
+                        </form>
+                    </div>
+                </div>
+    
+                <!-- Admin Login -->
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Admin Login</h5>
+                        <form onsubmit="adminLogin(event)">
+                            <div class="mb-3">
+                                <input type="email" class="form-control" placeholder="Email" required>
+                            </div>
+                            <div class="mb-3">
+                                <input type="password" class="form-control" placeholder="Password" required>
+                            </div>
+                            <button type="submit" class="btn btn-success">Login</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Dashboard -->
+    <div id="userDashboard" class="container mt-5 hidden">
+        <div class="d-flex justify-content-between mb-4">
+            <h3>Available Courses</h3>
+            <button class="btn btn-danger" onclick="logout()">Logout</button>
+        </div>
+        
+        <!-- Course List -->
+        <div id="courseList" class="row row-cols-1 row-cols-md-3 g-4"></div>
+        
+        <!-- Purchased Courses -->
+        <h4 class="mt-5">My Purchases</h4>
+        <div id="purchasedCourses" class="row row-cols-1 row-cols-md-3 g-4"></div>
+    </div>
+
+    <div id="adminDashboard" class="container mt-5 hidden">
+        <div class="d-flex justify-content-between mb-4">
+            <h3>Course Management</h3>
+            <button class="btn btn-danger" onclick="logout()">Logout</button>
+        </div>
+    
+        <!-- Create Course Form -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Create New Course</h5>
+                <form id="createCourseForm" onsubmit="createCourse(event)">
+                    <div class="mb-3">
+                        <input type="text" class="form-control" placeholder="Course Title" required>
+                    </div>
+                    <div class="mb-3">
+                        <textarea class="form-control" placeholder="Description" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <input type="number" class="form-control" placeholder="Price" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="url" class="form-control" placeholder="Image URL" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create Course</button>
+                </form>
+            </div>
+        </div>
+    
+        <!-- Edit Course Modal -->
+        <div class="modal fade" id="editCourseModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Course</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <form onsubmit="updateCourse(event)">
+                        <div class="modal-body">
+                            <input type="hidden" id="editCourseId">
+                            <div class="mb-3">
+                                <input type="text" class="form-control" id="editTitle" required>
+                            </div>
+                            <div class="mb-3">
+                                <textarea class="form-control" id="editDescription" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <input type="number" class="form-control" id="editPrice" required>
+                            </div>
+                            <div class="mb-3">
+                                <input type="url" class="form-control" id="editImageUrl" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Admin's Course List -->
+        <div id="adminCourseList" class="row row-cols-1 row-cols-md-3 g-4"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
